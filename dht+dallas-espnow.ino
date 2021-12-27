@@ -1,8 +1,8 @@
 #include <DallasTemperature.h>
 #include <OneWire.h>
 OneWire oneWire(14);
-DallasTemperature sensors(&oneWire);            //Utilistion du bus Onewire pour les capteurs
-DeviceAddress sensorDeviceAddress;              //Vérifie la compatibilité des capteurs avec la librairie
+DallasTemperature sensors(&oneWire);
+DeviceAddress sensorDeviceAddress;
 
 #include <ESP8266WiFi.h>
 #include <espnow.h>
