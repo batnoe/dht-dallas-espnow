@@ -57,7 +57,6 @@ void setup() {
 }
  
 void loop() {
-  //t = dht.readTemperature();
   sensors.requestTemperatures();
   myData.a = sensors.getTempCByIndex(0);
   myData.b = dht.readHumidity();
