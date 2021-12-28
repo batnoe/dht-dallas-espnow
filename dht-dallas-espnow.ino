@@ -1,13 +1,13 @@
 #include <DallasTemperature.h>
 #include <OneWire.h>
-OneWire oneWire(14);
+OneWire oneWire(13);
 DallasTemperature sensors(&oneWire);
 DeviceAddress sensorDeviceAddress;
 
 #include <ESP8266WiFi.h>
 #include <espnow.h>
 #include <DHT.h>
-#define DHTPin 13
+#define DHTPin 14
 #define DHTType DHT22
 DHT dht(DHTPin, DHTType);
 float t,h;
