@@ -12,7 +12,7 @@ DeviceAddress sensorDeviceAddress;
 DHT dht(DHTPin, DHTType);
 float t,h;
 
-uint8_t broadcastAddress[] = {0x9C, 0x9c, 0x1F, 0xC2, 0x8A, 0x78};
+uint8_t broadcastAddress[] = {0x9C, 0x9c, 0x1F, 0xC2, 0x8A, 0x78};    //-- uPesy
 
 typedef struct struct_message {
   float a;
