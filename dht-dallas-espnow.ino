@@ -12,33 +12,32 @@ DeviceAddress sensorDeviceAddress;
 DHT dht(DHTPin, DHTType);
 float t,h;
 
-uint8_t broadcastAddress[] = {0x9C, 0x9c, 0x1F, 0xC2, 0x8A, 0x78};    //-- uPesy
+uint8_t broadcastAddress1[] = {0x9C, 0x9c, 0x1F, 0xC2, 0x8A, 0x78};    //-- uPesy
+uint8_t broadcastAddress2[] = {0xc8, 0xc9, 0xa3, 0xd2, 0x5a, 0xc8}; //  nouveau devkit
 
 typedef struct struct_message {
   float a;
   float b;
 } struct_message;
-
 struct_message myData;
 
-void OnDataSent(uint8_t *mac_addr, uint8_t sendStatus) 
-{
-  Serial.print("Last Packet Send Status: ");
-  if (sendStatus == 0)
-  {
-    //Serial.println(Sent);
+void OnDataSent(uint8_t *mac_addr, uint8_t sendStatus) {
+  char macStr[18];
+  Serial.print("Packet to:");
+  snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
+         mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+  Serial.print(macStr);
+  Serial.print(" send status: ");
+  if (sendStatus == 0){
+    Serial.println("Delivery success");
   }
-  else
-  {
-    //Serial.println(Failed); 
+  else{
+    Serial.println("Delivery fail");
   }
 }
  
 void setup() {
   Serial.begin(115200);
-  delay(100);
-  //lcd.begin();
-  delay(10);
   sensors.begin();
   dht.begin();
 
@@ -51,22 +50,16 @@ void setup() {
 
   esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
   esp_now_register_send_cb(OnDataSent);
-
-  esp_now_add_peer(broadcastAddress, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
+  esp_now_add_peer(broadcastAddress1, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
+  esp_now_add_peer(broadcastAddress2, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
 }
  
 void loop() {
   //t = dht.readTemperature();
   sensors.requestTemperatures();
   myData.a = sensors.getTempCByIndex(0);
-  delay(10);
-  h = dht.readHumidity();
-  delay(10);
-
-  //myData.a = t;
-  myData.b = h;
+  myData.b = dht.readHumidity();
 
   esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
-  //lcd.clear();
   delay(2000);
 }
