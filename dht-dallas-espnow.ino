@@ -14,7 +14,7 @@ float t,h;
 
 uint8_t broadcastAddress1[] = {0x9C, 0x9c, 0x1F, 0xC2, 0x8A, 0x78};    //-- uPesy
 uint8_t broadcastAddress2[] = {0xc8, 0xc9, 0xa3, 0xd2, 0x5a, 0xc8}; //  nouveau devkit
-uint8_t broadcastAddress2[] = {0x24, 0x6F, 0x28, 0xB1, 0x45, 0x48};  // TFT2.8 DEVKIT
+uint8_t broadcastAddress3[] = {0x24, 0x6F, 0x28, 0xB1, 0x45, 0x48};  // TFT2.8 DEVKIT
 
 typedef struct struct_message {
   float a;
@@ -62,6 +62,6 @@ void loop() {
   myData.a = sensors.getTempCByIndex(0);
   myData.b = dht.readHumidity();
 
-  esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
+  esp_now_send(0, (uint8_t *) &myData, sizeof(myData));
   delay(2000);
 }
