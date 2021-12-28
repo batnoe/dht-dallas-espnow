@@ -12,11 +12,7 @@ DeviceAddress sensorDeviceAddress;
 DHT dht(DHTPin, DHTType);
 float t,h;
 
-<<<<<<< HEAD
 uint8_t broadcastAddress[] = {0x9C, 0x9c, 0x1F, 0xC2, 0x8A, 0x78};  //-- uPesy
-=======
-uint8_t broadcastAddress[] = {0x9C, 0x9c, 0x1F, 0xC2, 0x8A, 0x78};  //-- uPesy
->>>>>>> 138bc4554bb3dc835a0de3c379000d4495290d02
 
 typedef struct struct_message {
   float a;
@@ -28,21 +24,11 @@ struct_message myData;
 void OnDataSent(uint8_t *mac_addr, uint8_t sendStatus) 
 {
   Serial.print("Last Packet Send Status: ");
-  if (sendStatus == 0)
-  {
-    //Serial.println(Sent);
-  }
-  else
-  {
-    //Serial.println(Failed); 
-  }
 }
  
 void setup() {
   Serial.begin(115200);
   delay(100);
-  //lcd.begin();
-  delay(10);
   sensors.begin();
   dht.begin();
 
@@ -60,17 +46,11 @@ void setup() {
 }
  
 void loop() {
-  //t = dht.readTemperature();
   sensors.requestTemperatures();
   myData.a = sensors.getTempCByIndex(0);
   delay(10);
-  h = dht.readHumidity();
+  myData.b = dht.readHumidity();
   delay(10);
-
-  //myData.a = t;
-  myData.b = h;
-
   esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
-  //lcd.clear();
   delay(2000);
 }
